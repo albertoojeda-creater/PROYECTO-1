@@ -1,0 +1,30 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+table{
+    border: 3px solid darkcyan;
+    width: 80%;
+    border-spacing: 0px;
+}
+thead{
+    background-color: darkcyan;
+    color: white;
+}
+td{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid darkcyan;
+}
+tr:nth-child(odd){/*odd: pares and even: imprares*/
+    background-color: cadetblue;
+}
+.descripcion{
+    width: 40%;
+}
+.contenedor{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

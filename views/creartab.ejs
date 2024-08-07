@@ -1,0 +1,60 @@
+<%- include("templates/encabezado")%>
+<div class="container">
+    <div class="header">
+        <h1>Interfaz de Base de Datos</h1>
+    </div>
+    <div class="form">
+        <label for="table-name">Table Name:</label>
+        <input type="text" id="table-name" name="table-name">
+        <label for="schema">Schema:</label>
+        <input type="text" id="schema" name="schema">
+        <label for="charset">Charset/Collation:</label>
+        <select id="charset" name="charset">
+            <option value="utf8">utf8</option>
+            <option value="utf8mb4">utf8mb4</option>
+            <option value="latin1">latin1</option>
+            <option value="ascii">ascii</option>
+        </select>
+        <label for="engine">Engine:</label>
+        <input type="text" id="engine" name="engine" value="InnoDB">
+        <label for="comments">Comments:</label>
+        <input type="text" id="comments" name="comments">
+    </div>
+    <table id="columns-table">
+        <thead>
+            <tr>
+                <th>Column Name</th>
+                <th>Datatype</th>
+                <th>PK</th>
+                <th>NN</th>
+                <th>UQ</th>
+                <th>B</th>
+                <th>UN</th>
+                <th>ZF</th>
+                <th>AI</th>
+                <th>G</th>
+                <th>Default/Expression</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+                <td><input type="text"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="buttons">
+        <button id="apply">Apply</button>
+        <button id="revert">Revert</button>
+    </div>
+</div>
+<%- include("templates/pie")%>
