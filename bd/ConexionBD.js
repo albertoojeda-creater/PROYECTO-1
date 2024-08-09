@@ -67,4 +67,4 @@ class ConectarBD {
     }
 }
 
-module.exports = new ConexionBD();
+module.exports = new ConectarBD();
