@@ -7,6 +7,11 @@ const ColumnasBD = require('../bd/Columnas');
 const ConsultasBD = require('../bd/ConsultasBD');
 const { crearBaseDeDatos, obtenerBasesDeDatos } = require('../bd/ConexionBD');
 
+// Ruta para mostrar el formulario de agregarBD.ejs
+router.get('/agregarBD', (req, res) => {
+    res.render('agregarBD'); // Asegúrate de que 'agregarBD' corresponde al nombre del archivo EJS
+});
+
 // Página de bienvenida
 ruta.get("/", (req, res) => {
     res.render("bienvenida");
