@@ -57,4 +57,5 @@ class TabBdBD extends ConectarBD {
     }
 }
 
+
 module.exports = TabBdBD;

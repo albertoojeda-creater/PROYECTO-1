@@ -6,22 +6,23 @@ const TabBdBD = require('../bd/TablasBD');
 const ColumnasBD = require('../bd/Columnas');
 const ConsultasBD = require('../bd/ConsultasBD');
 const { crearBaseDeDatos, obtenerBasesDeDatos } = require('../bd/ConexionBD');
+
 // Página de bienvenida
 ruta.get("/", (req, res) => {
     res.render("bienvenida");
 });
 
-// Crear base de datos
-ruta.get("/CrearBD", (req, res) => {
-    res.render("crearbd");
+// Mostrar formulario para crear base de datos
+ruta.get('/CrearBD', (req, res) => {
+    res.render('crearbd');
 });
 
-ruta.post("/CrearBD", async (req, res) => {
-    const { nombreBD } = req.body;
-    const baseDatosBD = new BaseDatosBD();
+// Crear base de datos y redirigir a la lista de bases de datos
+ruta.post('/CrearBD', async (req, res) => {
+    const { nombre, descripcion } = req.body;
     try {
-        await baseDatosBD.crearBaseDeDatos(nombreBD);
-        res.redirect("/BaseDatos");
+        await crearBaseDeDatos(nombre, descripcion);
+        res.redirect('/BaseDatos');
     } catch (error) {
         console.error("Error al crear base de datos: " + error);
         res.status(500).send("Error interno del servidor");
@@ -29,11 +30,10 @@ ruta.post("/CrearBD", async (req, res) => {
 });
 
 // Mostrar bases de datos
-ruta.get("/BaseDatos", async (req, res) => {
-    const baseDatosBD = new BaseDatosBD();
+ruta.get('/BaseDatos', async (req, res) => {
     try {
-        const basesDatos = await baseDatosBD.mostrarBaseDatos();
-        res.render("datos", { basesDatos });
+        const basesDatos = await obtenerBasesDeDatos();
+        res.render('datos', { basesDatos });
     } catch (error) {
         console.error("Error al obtener bases de datos: " + error);
         res.status(500).send("Error interno del servidor");
@@ -41,14 +41,41 @@ ruta.get("/BaseDatos", async (req, res) => {
 });
 
 // Eliminar base de datos
-ruta.get("/borrarBD/:nombreBD", async (req, res) => {
-    const { nombreBD } = req.params;
+ruta.post("/borrarBD/:id", async (req, res) => {
+    const { id } = req.params;
     const baseDatosBD = new BaseDatosBD();
     try {
-        await baseDatosBD.eliminarBaseDeDatos(nombreBD);
+        await baseDatosBD.eliminarBaseDeDatos(id);
         res.redirect("/BaseDatos");
     } catch (error) {
         console.error("Error al eliminar base de datos: " + error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
+
+// Mostrar formulario para modificar base de datos
+ruta.get('/modificarBD/:id', async (req, res) => {
+    const { id } = req.params;
+    const baseDatosBD = new BaseDatosBD();
+    try {
+        const baseDatos = await baseDatosBD.obtenerBaseDeDatosPorId(id);
+        res.render('modificarbd', { baseDatos });
+    } catch (error) {
+        console.error("Error al obtener la base de datos: " + error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
+
+// Modificar base de datos
+ruta.post('/modificarBD/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nombre, descripcion } = req.body;
+    const baseDatosBD = new BaseDatosBD();
+    try {
+        await baseDatosBD.modificarBaseDeDatos(id, nombre, descripcion);
+        res.redirect('/BaseDatos');
+    } catch (error) {
+        console.error("Error al modificar la base de datos: " + error);
         res.status(500).send("Error interno del servidor");
     }
 });
@@ -84,9 +111,9 @@ ruta.get("/Tablas", async (req, res) => {
 });
 
 // Eliminar tabla
-ruta.get("/borrarTabla/:nombreTabla", async (req, res) => {
+ruta.post("/borrarTabla/:nombreTabla", async (req, res) => {
     const { nombreTabla } = req.params;
-    const { db } = req.query;
+    const { db } = req.body;
     const tabBdBD = new TabBdBD(db);
     try {
         await tabBdBD.eliminarTabla(nombreTabla);
@@ -149,74 +176,44 @@ ruta.post("/alterTable", async (req, res) => {
     }
 });
 
-// Ruta para mostrar el formulario de creación de base de datos
+// Mostrar formulario de creación de base de datos
 ruta.get('/agregaBD', (req, res) => {
     res.render('agregaBD');
 });
 
-// Ruta para manejar el envío del formulario de creación de base de datos
-ruta.post('/creaBD', (req, res) => {
+// Manejar el envío del formulario de creación de base de datos
+ruta.post('/creaBD', async (req, res) => {
     const { nombre, descripcion } = req.body;
-    // Lógica para crear la base de datos usando nombre y descripcion
-    res.redirect('/');
-});
-ruta.post('/creaBD', (req, res) => {
-    const { nombre, descripcion } = req.body;
-    crearBaseDeDatos(nombre, descripcion);
-    res.redirect('/');
-});
-// Ruta para mostrar el formulario de creación de base de datos
-ruta.get('/agregarBD', (req, res) => {
-    res.render('agregarBD');
+    try {
+        await crearBaseDeDatos(nombre, descripcion);
+        res.redirect('/BaseDatos');
+    } catch (error) {
+        console.error("Error al crear base de datos: " + error);
+        res.status(500).send("Error interno del servidor");
+    }
 });
 
-// Ruta para manejar el envío del formulario de creación de base de datos
-ruta.post('/creaBD', (req, res) => {
-    const { nombre, descripcion } = req.body;
-    crearBaseDeDatos(nombre, descripcion);
-    res.redirect('/consultas');
-});
-
-// Ruta para mostrar la consulta de bases de datos
-ruta.get('/consultas', (req, res) => {
-    const basesDeDatos = obtenerBasesDeDatos();
-    res.render('consultas', { basesDeDatos });
-});
-
-// Ruta para mostrar el formulario de creación de tablas
+// Mostrar formulario de creación de tablas
 ruta.get('/creartab/:nombreBD', (req, res) => {
     const nombreBD = req.params.nombreBD;
     res.render('creartab', { nombreBD });
 });
-ruta.post('/creartab', (req, res) => {
+
+ruta.post('/creartab', async (req, res) => {
     const { nombreBD, nombreTabla } = req.body;
-    crearTabla(nombreBD, nombreTabla);
-    res.redirect('/consultas');
-});
-// rutasBD.js
-ruta.get('/mostrartablas', (req, res) => {
-    const query = 'Show tables';
-        res.render('mostrartablas');
-    });
-
-
-
-
-/*router.get('/api/basesDatos', async (req, res) => {
-    let baseDatosBD; // Definido fuera del bloque try
+    const tabBdBD = new TabBdBD(nombreBD);
     try {
-        baseDatosBD = new BaseDatosBD();
-        await baseDatosBD.conectarMysql(); // Conectar a MySQL
-        const basesDatos = await baseDatosBD.mostrarBaseDatos();
-        res.json(basesDatos); // Devuelve los datos en formato JSON
+        await tabBdBD.crearTabla(nombreTabla);
+        res.redirect(`/Tablas?db=${nombreBD}`);
     } catch (error) {
-        console.error("Error al obtener las bases de datos: " + error);
-        res.status(500).json({ error: "Error interno del servidor" });
-    } finally {
-        if (baseDatosBD) { // Verifica si baseDatosBD está definido
-            await baseDatosBD.cerrarConexion(); // Cerrar la conexión
-        }
+        console.error("Error al crear tabla: " + error);
+        res.status(500).send("Error interno del servidor");
     }
-});*/
+});
+
+// Mostrar tablas (modificación)
+ruta.get('/mostrartablas', (req, res) => {
+    res.render('mostrartablas');
+});
 
 module.exports = ruta;
