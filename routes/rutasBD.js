@@ -8,8 +8,8 @@ const ConsultasBD = require('../bd/ConsultasBD');
 const { crearBaseDeDatos, obtenerBasesDeDatos } = require('../bd/ConexionBD');
 
 // Ruta para manejar la creación de la base de datos
-ruta.post('/crearBD', (req, res) => {
-    const nombreBD = req.body.nombreBD;
+ruta.post('/crearBD', async (req, res) => {
+    const { nombreBD, descripcionBD } = req.body;
 
     if (!/^[a-zA-Z0-9_]+$/.test(nombreBD)) {
         return res.status(400).send('Nombre de la base de datos inválido');
@@ -18,19 +18,11 @@ ruta.post('/crearBD', (req, res) => {
     console.log('Nombre de la BD recibido:', nombreBD);
 
     try {
-        // Crear la base de datos
-        db.query(`CREATE DATABASE ${nombreBD}`, (err, result) => {
-            if (err) {
-                console.error('Error al crear la base de datos:', err);
-                return res.status(500).send('Error al crear la base de datos');
-            }
-
-            console.log('Base de datos creada con éxito:', nombreBD);
-            // Redirigir a la página de datos.ejs
-            res.redirect('/datos');
-        });
+        await db.crearBaseDeDatos(nombreBD, descripcionBD);
+        console.log('Base de datos creada con éxito:', nombreBD);
+        res.redirect('/datos');
     } catch (error) {
-        console.error('Error inesperado:', error);
+        console.error('Error al crear la base de datos:', error);
         res.status(500).send('Error interno del servidor');
     }
 });

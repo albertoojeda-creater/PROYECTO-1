@@ -1,56 +1,70 @@
 require('dotenv').config();
-class ConexionBD{
-    constructor(){
-        this.conexion=null;
-        this.mysql=require("mysql2/promise");
+
+class ConexionBD {
+    constructor() {
+        this.conexion = null;
+        this.mysql = require("mysql2/promise");
     }
-    async conectarMySql(){
+
+    // Método para conectar a MySQL
+    async conectarMySql() {
         try {
-            this.conexion=await this.mysql.createConnection({
-                host:process.env.HOSTMYSQL,
-                user:process.env.USERMYSQL,
-                password:process.env.PASSWORSMYSQL,
-                database:process.env.DATABASEMYSQL,
-                port:process.env.PORTMYSQL
+            this.conexion = await this.mysql.createConnection({
+                host: process.env.HOSTMYSQL,
+                user: process.env.USERMYSQL,
+                password: process.env.PASSWORSMYSQL,
+                database: process.env.DATABASEMYSQL,
+                port: process.env.PORTMYSQL
             });
-            console.log("conexion creada a mysql ");
+            console.log("Conexión creada a MySQL");
         } catch (error) {
-            console.error("Error al crear la conexion "+error);
+            console.error("Error al crear la conexión: " + error);
         }
     }
-    async cerrarConexion(){
-        if(this.conexion!=null){
+
+    // Método para cerrar la conexión
+    async cerrarConexion() {
+        if (this.conexion != null) {
             try {
                 await this.conexion.end();
-                console.log("Conexion cerrada ");
+                console.log("Conexión cerrada");
             } catch (error) {
-                console.error("Error al cerar conexion "+error);
+                console.error("Error al cerrar la conexión: " + error);
             }
+        }
+    }
+
+    // Método para crear una base de datos
+    async crearBaseDeDatos(nombre, descripcion) {
+        if (!this.conexion) {
+            await this.conectarMySql();
+        }
+
+        try {
+            const query = 'INSERT INTO bases_de_datos (nombre, descripcion) VALUES (?, ?)';
+            const [results] = await this.conexion.execute(query, [nombre, descripcion]);
+            return results;
+        } catch (error) {
+            console.error("Error al crear la base de datos: " + error);
+            throw error;
+        }
+    }
+
+    // Método para obtener todas las bases de datos
+    async obtenerBasesDeDatos() {
+        if (!this.conexion) {
+            await this.conectarMySql();
+        }
+
+        try {
+            const query = 'SELECT * FROM bases_de_datos';
+            const [results] = await this.conexion.execute(query);
+            return results;
+        } catch (error) {
+            console.error("Error al obtener las bases de datos: " + error);
+            throw error;
         }
     }
 }
-const crearBaseDeDatos = (nombre, descripcion) => {
-    return new Promise((resolve, reject) => {
-        const query = 'INSERT INTO bases_de_datos (nombre, descripcion) VALUES (?, ?)';
-        connection.query(query, [nombre, descripcion], (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(results);
-        });
-    });
-};
 
-const obtenerBasesDeDatos = () => {
-    return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM bases_de_datos';
-        connection.query(query, (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(results);
-        });
-    });
-};
-
-module.exports = ConexionBD;
+module.exports = new ConexionBD();
