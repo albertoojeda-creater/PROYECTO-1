@@ -1,11 +1,28 @@
 const express = require('express');
 const ruta = express.Router();
-
+const db = require('./ConexionBD');
 const BaseDatosBD = require('../bd/BDtabBD');
 const TabBdBD = require('../bd/TablasBD');
 const ColumnasBD = require('../bd/Columnas');
 const ConsultasBD = require('../bd/ConsultasBD');
 const { crearBaseDeDatos, obtenerBasesDeDatos } = require('../bd/ConexionBD');
+
+// Ruta para manejar la creación de la base de datos
+ruta.post('/crearBD', (req, res) => {
+    const nombreBD = req.body.nombreBD;
+
+    // Crear la base de datos
+    db.query(`CREATE DATABASE ${nombreBD}`, (err, result) => {
+        if (err) {
+            console.error('Error al crear la base de datos:', err);
+            return res.status(500).send('Error al crear la base de datos');
+        }
+
+        console.log('Base de datos creada con éxito:', nombreBD);
+        // Redirigir a la página de datos.ejs
+        res.redirect('/datos');
+    });
+});
 
 // Ruta para mostrar el formulario de agregarBD.ejs
 ruta.get('/agregarBD', (req, res) => {
