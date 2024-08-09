@@ -1,19 +1,18 @@
 require('dotenv').config();
 
-class ConexionBD {
+class ConectarBD {
     constructor() {
         this.conexion = null;
         this.mysql = require("mysql2/promise");
     }
 
     // Método para conectar a MySQL
-    async conectarMySql() {
+    async conectarMysql() {  // Asegúrate de que el nombre del método coincida con el utilizado en BaseDatosBD
         try {
             this.conexion = await this.mysql.createConnection({
                 host: process.env.HOSTMYSQL,
                 user: process.env.USERMYSQL,
                 password: process.env.PASSWORSMYSQL,
-                database: process.env.DATABASEMYSQL,
                 port: process.env.PORTMYSQL
             });
             console.log("Conexión creada a MySQL");
@@ -24,7 +23,7 @@ class ConexionBD {
 
     // Método para cerrar la conexión
     async cerrarConexion() {
-        if (this.conexion != null) {
+        if (this.conexion) {
             try {
                 await this.conexion.end();
                 console.log("Conexión cerrada");
@@ -33,6 +32,7 @@ class ConexionBD {
             }
         }
     }
+
 
     // Método para crear una base de datos
     async crearBaseDeDatos(nombre, descripcion) {

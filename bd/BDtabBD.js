@@ -1,6 +1,6 @@
-const ConexionBD = require('./ConexionBD');
+const ConectarBD = require('./ConexionBD');
 
-class BaseDatosBD extends ConexionBD {
+class BaseDatosBD extends ConectarBD {
     constructor() {
         super(); // Llama al constructor de ConectarBD
     }
