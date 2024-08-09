@@ -6,8 +6,7 @@ class ConectarBD {
         this.mysql = require("mysql2/promise");
     }
 
-    // Método para conectar a MySQL
-    async conectarMysql() {  // Asegúrate de que el nombre del método coincida con el utilizado en BaseDatosBD
+    async conectarMysql() {
         try {
             this.conexion = await this.mysql.createConnection({
                 host: process.env.HOSTMYSQL,
@@ -21,7 +20,6 @@ class ConectarBD {
         }
     }
 
-    // Método para cerrar la conexión
     async cerrarConexion() {
         if (this.conexion) {
             try {
