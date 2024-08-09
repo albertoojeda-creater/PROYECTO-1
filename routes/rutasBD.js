@@ -1,6 +1,6 @@
 const express = require('express');
 const ruta = express.Router();
-const db = require('./ConexionBD');
+
 const BaseDatosBD = require('../bd/BDtabBD');
 const TabBdBD = require('../bd/TablasBD');
 const ColumnasBD = require('../bd/Columnas');
