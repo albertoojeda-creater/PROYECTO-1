@@ -8,7 +8,7 @@ const ConsultasBD = require('../bd/ConsultasBD');
 const { crearBaseDeDatos, obtenerBasesDeDatos } = require('../bd/ConexionBD');
 
 // Ruta para manejar la creación de la base de datos
-ruta..post('/crearBD', (req, res) => {
+ruta.post('/crearBD', (req, res) => {
     const nombreBD = req.body.nombreBD;
 
     if (!/^[a-zA-Z0-9_]+$/.test(nombreBD)) {
