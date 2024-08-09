@@ -1,4 +1,4 @@
-const ConectarBD = require('./ConexionBD');
+const ConectarBD = require('./ConexionBD'); // Asegúrate de que la ruta sea correcta
 
 class BaseDatosBD extends ConectarBD {
     constructor() {
