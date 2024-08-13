@@ -1,0 +1,12 @@
+<%- include("templates/encabezado") %>
+<h1>Crear nueva base de datos</h1>
+<div class="container">
+    <form action="/modificarBaseDeDatos/<%= base.nombre %>" method="POST">
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" class="form-control" required><%= base.descripcion %></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+</div>
+<%- include("templates/pie") %>

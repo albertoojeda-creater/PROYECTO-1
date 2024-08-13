@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const rutasBD = require("./routes/rutasBD");
+const rutasBD = require("./routes/basesDatosRutas"); // Asegúrate de que la ruta sea correcta
 const app = express();
 
 app.set("view engine", "ejs");

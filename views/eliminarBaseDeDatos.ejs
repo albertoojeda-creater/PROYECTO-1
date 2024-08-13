@@ -1,0 +1,5 @@
+<%- include("templates/encabezado") %>
+<form action="/eliminarBaseDeDatos/<%= baseDatos.nombre %>" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta base de datos?');">
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+</form>
+<%- include("templates/pie") %>

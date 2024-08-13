@@ -1,6 +1,6 @@
 <%- include("templates/encabezado") %>
 <div class="content">
-    <h2>Bases de datos</h2>
+    <h2>Bases de Datos</h2>
     <table id="databases-table">
         <thead>
             <tr>
@@ -10,15 +10,15 @@
             </tr>
         </thead>
         <tbody>
-            <% basesDatos.forEach(baseDatos => { %>
+            <% basesCorrectas.forEach(baseDatos => { %>
                 <tr>
                     <td><%= baseDatos.nombre %></td>
                     <td><%= baseDatos.descripcion %></td>
                     <td>
-                        <form action="/modificarBD/<%= baseDatos.id %>" method="GET" style="display:inline;">
+                        <form action="/modificarBaseDeDatos/<%= baseDatos.nombre %>" method="GET" style="display:inline;">
                             <button type="submit" class="btn btn-warning">Modificar</button>
                         </form>
-                        <form action="/borrarBD/<%= baseDatos.id %>" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta base de datos?');">
+                        <form action="/eliminarBaseDeDatos/<%= baseDatos.nombre %>" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta base de datos?');">
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
                     </td>
