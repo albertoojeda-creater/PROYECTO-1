@@ -1,0 +1,66 @@
+<%- include("templates/encabezado") %>
+<h1>Agregar Nueva Tabla a la Base de Datos: <%= nombreBD %></h1>
+<form action="/agregarTabla/<%= nombreBD %>" method="POST">
+    <div>
+        <label for="nombre">Nombre de la Tabla:</label>
+        <input type="text" id="nombre" name="nombre" required>
+    </div>
+    <div>
+        <label for="baseDatos">Base de Datos:</label>
+        <input type="text" id="baseDatos" name="baseDatos" value="<%= nombreBD %>" readonly>
+    </div>
+    <div>
+        <label for="charset">Charset:</label>
+        <input type="text" id="charset" name="charset" value="utf8">
+    </div>
+    <div>
+        <label for="collation">Collation:</label>
+        <input type="text" id="collation" name="collation" value="utf8_spanish2_ci">
+    </div>
+    <div>
+        <label for="engine">Engine:</label>
+        <input type="text" id="engine" name="engine" value="InnoDB">
+    </div>
+    <div>
+        <label for="comentarios">Comentarios:</label>
+        <input type="text" id="comentarios" name="comentarios">
+    </div>
+    
+    <h2>Campos</h2>
+    <table id="columns-table">
+        <thead>
+            <tr>
+                <th>Column Name</th>
+                <th>Datatype</th>
+                <th>PK</th>
+                <th>NN</th>
+                <th>UQ</th>
+                <th>B</th>
+                <th>UN</th>
+                <th>ZF</th>
+                <th>AI</th>
+                <th>G</th>
+                <th>Default/Expression</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" name="columnName[]" placeholder="Nombre de columna" required></td>
+                <td><input type="text" name="datatype[]" placeholder="Tipo de dato" required></td>
+                <td><input type="checkbox" name="pk[]"></td>
+                <td><input type="checkbox" name="nn[]"></td>
+                <td><input type="checkbox" name="uq[]"></td>
+                <td><input type="checkbox" name="b[]"></td>
+                <td><input type="checkbox" name="un[]"></td>
+                <td><input type="checkbox" name="zf[]"></td>
+                <td><input type="checkbox" name="ai[]"></td>
+                <td><input type="checkbox" name="g[]"></td>
+                <td><input type="text" name="defaultExpression[]"></td>
+            </tr>
+        </tbody>
+    </table>
+    <form action="/mostrarCampos/:nombreBD/:nombreTabla" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-success" id="submit">Guardar Tabla</button>
+    </form>
+</form>
+<%- include("templates/pie") %>

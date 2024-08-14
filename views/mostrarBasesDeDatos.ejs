@@ -21,6 +21,9 @@
                         <form action="/eliminarBaseDeDatos/<%= baseDatos.nombre %>" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta base de datos?');">
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
+                        <form action="/mostrarTablas/<%= baseDatos.nombre %>" method="GET" style="display:inline;">
+                            <button type="submit" class="btn btn-info">Mostrar Tablas</button>
+                        </form>
                     </td>
                 </tr>
             <% }) %>

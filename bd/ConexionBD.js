@@ -15,7 +15,22 @@ class ConectarBD{
             });
             console.log("Conexion creada a MySql");
         } catch (error) {
-            console.error("Error al crear la conexion"+error);
+            console.error("Error al crear la conexion "+error);
+        }
+    }
+
+    async conectarBase(bd){
+        try {
+            this.conexion=await this.mysql.createConnection({
+                host:process.env.HOSTMYSQL,
+                user:process.env.USERMYSQL,
+                password:process.env.PASSWORDMYSQL,
+                database:bd,
+                port:process.env.PORTMYSQL
+            });
+            console.log("Conexion creada a BD");
+        } catch (error) {
+            console.error("Error al crear la conexion "+error);
         }
     }
 
@@ -23,7 +38,7 @@ class ConectarBD{
         if (this.conexion!=null) {
             try {
                 await this.conexion.end();
-                console.log("Conexion cerrada de MySql");
+                console.log("Conexion cerrada");
             } catch (error) {
                 console.error("Error al cerrar la conexion "+error);
             }

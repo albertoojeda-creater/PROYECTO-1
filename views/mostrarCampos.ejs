@@ -1,0 +1,56 @@
+<%- include("templates/encabezado") %>
+<h2>Lista de Campos en la Tabla <%= nombreTabla %> de la Base de Datos <%= nombreBD %></h2>
+<table id="columns-table">
+    <thead>
+        <tr>
+            <th>Nombre de Columna</th>
+            <th>Tipo de Dato</th>
+            <th>PK</th>
+            <th>NN</th>
+            <th>UQ</th>
+            <th>B</th>
+            <th>UN</th>
+            <th>ZF</th>
+            <th>AI</th>
+            <th>G</th>
+            <th>Default/Expression</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (campos && campos.length > 0) { %>
+            <% campos.forEach(campo => { %>
+                <tr>
+                    <td><%= campo.Field %></td>
+                    <td><%= campo.Type %></td>
+                    <td><%= campo.Key === 'PRI' ? 'Sí' : 'No' %></td>
+                    <td><%= campo.Null === 'NO' ? 'No' : 'Sí' %></td>
+                    <td><%= campo.Key === 'UNI' ? 'Sí' : 'No' %></td>
+                    <td><%= campo.Extra.includes('auto_increment') ? 'Sí' : 'No' %></td>
+                    <td><%= campo.Unique === 'UNIQUE' ? 'Sí' : 'No' %></td>
+                    <td><%= campo.Default %></td>
+                    <td><%= campo.Auto_increment %></td>
+                    <td><%= campo.G %></td>
+                    <td><%= campo.Default %></td>
+                    <td>
+                        <a href="/campos/eliminar/<%= campo.Field %>" onclick="return confirm('¿Estás seguro de que deseas eliminar este campo?');">Eliminar</a>
+                    </td>
+                </tr>
+            <% }); %>
+        <% } else { %>
+            <tr>
+                <td colspan="12">No hay campos disponibles.</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+<form action="/editarTabla/:nombreBD/:nombreTabla" method="GET" style="display:inline;">
+    <button type="submit" class="btn btn-warning">Modificar tabla</button>
+</form>
+
+<h2>Agregar Nuevo Campo</h2>
+<form id="add-field-form" action="/campos/agregar" method="POST">
+    <button type="button" id="apply">Aplicar Cambios</button>
+    <button type="button" id="revert">Revertir Cambios</button>
+</form>
+<%- include("templates/pie") %>

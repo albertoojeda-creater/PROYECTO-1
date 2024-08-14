@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const lastRow = tableBody.rows[tableBody.rows.length - 1];
         const inputs = lastRow.querySelectorAll('input[type="text"]');
         
+        // Obtén el valor del campo "Column Name"
+        const columnNameInput = lastRow.querySelector('input[type="text"]');
+        
         let allFilled = true;
         inputs.forEach(input => {
             if (input.value === '') {
@@ -34,6 +37,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Verifica si el campo "Column Name" está vacío
+        if (columnNameInput.value === '') {
+            allFilled = false;
+        }
+
+        // Solo añade una nueva fila si todos los campos están llenos y "Column Name" no está vacío
         if (allFilled) {
             addRow();
         }

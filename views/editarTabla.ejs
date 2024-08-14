@@ -1,0 +1,12 @@
+<%- include("templates/encabezado") %>
+<form action="/tablas/editarTabla/<%= nombreBD %>/<%= nombreTabla %>" method="post">
+    <% campos.forEach(campo => { %>
+        <div>
+            <label for="<%= campo.nombre %>"><%= campo.nombre %></label>
+            <!-- Otros campos del formulario -->
+            <button type="submit" formaction="/tablas/eliminarCampo/<%= nombreBD %>/<%= nombreTabla %>/<%= campo.nombre %>" method="post">Eliminar Campo</button>
+        </div>
+    <% }) %>
+    <button type="submit">Guardar Cambios</button>
+</form>
+<%- include("templates/pie") %>
